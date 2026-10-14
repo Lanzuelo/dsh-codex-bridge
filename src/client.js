@@ -26,6 +26,7 @@ window.__ModuleLoader__.load({
       const [role, setRole] = React.useState('all');
       const [model, setModel] = React.useState('default');
       const [models, setModels] = React.useState([]);
+      const [catalogStatus, setCatalogStatus] = React.useState('');
       const [savedModels, setSavedModels] = React.useState({});
       const [jobs, setJobs] = React.useState([]);
       const [quotaPaused, setQuotaPaused] = React.useState(false);
@@ -51,21 +52,30 @@ window.__ModuleLoader__.load({
       async function run(input, catalog = false) {
         if (busy && input !== 'cancel') return;
         if (input !== 'cancel') setBusy(true);
+        if (catalog) setCatalogStatus('Загрузка моделей…');
         try {
           const result = await execute(sessionId, input, tab.signal);
           if (!mounted.current) return;
           if (catalog && result.kind === 'success') {
             const data = JSON.parse(result.text);
             setModels(data.models);
+            setCatalogStatus(`Загружено моделей: ${data.models.length}. Откройте список ниже.`);
             setOutput('Выберите модель из списка или введите поддерживаемый ID. Доступ проверяется успешным запросом.');
-          } else setOutput(result.text || 'Готово.');
+          } else {
+            setOutput(result.text || 'Готово.');
+            if (catalog) setCatalogStatus(result.text || 'Не удалось загрузить модели.');
+          }
           if (input.startsWith('model ') && result.kind === 'success') {
             await refresh();
           }
           setError(result.kind === 'error');
           return result;
         } catch (failure) {
-          if (mounted.current) { setOutput(failure.message || 'Не удалось выполнить команду.'); setError(true); }
+          if (mounted.current) {
+            const message = failure.message || 'Не удалось выполнить команду.';
+            setOutput(message); setError(true);
+            if (catalog) setCatalogStatus(message);
+          }
           return null;
         } finally {
           if (mounted.current && input !== 'cancel') setBusy(false);
@@ -73,6 +83,7 @@ window.__ModuleLoader__.load({
         }
       }
       const button = (text, action, disabled = busy) => h('button', { type: 'button', style: css.button, disabled, onClick: action }, text);
+      const manualModel = model !== 'default' && !models.some(item => item.id === model);
       const reviewCommand = () => files.trim() ? `review files ${files.trim()}${focus.trim() ? ` --focus ${focus.trim()}` : ''}` : focus.trim() ? `review focus ${focus.trim()}` : 'review';
       const stage = (() => {
         const job = jobs.at(-1);
@@ -130,12 +141,13 @@ window.__ModuleLoader__.load({
           h('select', { style: { ...css.field, width: 'auto' }, value: role, 'aria-label': 'Роль модели', onChange: e => { setRole(e.target.value); setModel(valueForRole(savedModels, e.target.value)); } },
             ...[['all', 'Одна для всех'], ['architect', 'Архитектор'], ['review', 'Ревью'], ['fix', 'Исправление']].map(([value, label]) => h('option', { key: value, value }, label))),
           button('Загрузить модели', () => run('models json', true))),
-        h('select', { style: css.field, value: models.some(item => item.id === model) || model === 'default' ? model : 'manual', 'aria-label': 'Выбор модели', onChange: e => setModel(e.target.value === 'manual' ? '' : e.target.value) },
+        h('p', { style: css.hint, role: 'status', 'aria-live': 'polite' }, catalogStatus || 'Нажмите «Загрузить модели», чтобы получить доступный список Codex.'),
+        h('div', { style: { ...css.row, flexWrap: 'nowrap' } },
+        h('select', { style: { ...css.field, flex: 1, width: 'auto' }, value: manualModel ? 'manual' : model, 'aria-label': 'Выбор модели', onChange: e => setModel(e.target.value === 'manual' ? '' : e.target.value) },
           h('option', { value: 'default' }, `По умолчанию${models.find(item => item.default) ? ' · ' + models.find(item => item.default).name : ' Codex'}`),
-          ...models.map(item => h('option', { key: item.id, value: item.id }, item.name)), h('option', { value: 'manual' }, 'Указать поддерживаемый ID вручную')),
-        h('div', { style: css.row },
-          h('input', { style: { ...css.field, flex: 1 }, value: model, 'aria-label': 'ID модели вручную', onChange: e => setModel(e.target.value), placeholder: 'Поддерживаемый ID' }),
-          button('Сохранить', () => run(`model ${role} ${model}`), busy || !model.trim()))),
+          ...models.map(item => h('option', { key: item.id, value: item.id }, `${item.name} · ${item.id}`)), h('option', { value: 'manual' }, 'Другой ID…')),
+          button('Сохранить', () => run(`model ${role} ${model}`), busy || !model.trim())),
+        manualModel ? h('input', { style: { ...css.field, marginTop: 6 }, value: model, 'aria-label': 'ID модели вручную', onChange: e => setModel(e.target.value), placeholder: 'Поддерживаемый ID модели' }) : null),
         h('details', null, h('summary', null, 'Команда вручную'),
         h('form', { onSubmit: e => { e.preventDefault(); if (command.trim()) run(command.replace(/^\/codex\s+/, '')); }, style: css.row },
           h('input', { style: { ...css.field, flex: 1 }, value: command, 'aria-label': 'Команда продолжения', onChange: e => setCommand(e.target.value), placeholder: 'Например: show <id>' }),

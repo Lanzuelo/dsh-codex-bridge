@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.1 — 2026-10-14
+
+- Load the model selector from Codex's local model cache, avoiding the DSH
+  sandbox failure caused by app-server writes to the Codex home directory.
+- Show model-loading progress and errors beside the button, keep Save visible,
+  and show the manual model ID field only when explicitly selected.
+- Bound app-server shutdown so a missing Windows close event cannot leave the
+  model command pending forever.
+
 ## 0.2.0 — 2026-10-14
 
 - Make the Codex Bridge panel the primary workflow: project idea, role-specific

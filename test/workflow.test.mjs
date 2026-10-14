@@ -7,7 +7,21 @@ import { Bridge } from '../src/bridge.mjs';
 import { BridgeError } from '../src/errors.mjs';
 import { buildExecArgs } from '../src/codex.mjs';
 import { schemaFor, decodeResult } from '../src/result.mjs';
+import { cachedModels } from '../src/catalog.mjs';
 const output = extra => ({ status: 'complete', summary: 'summary', handoff: 'short handoff', files: [], options: [], findings: [], ...extra });
+
+test('model catalog reads the existing Codex cache without starting app-server', async t => {
+  const home = await fs.mkdtemp(path.resolve('.compat/tests/catalog-')); t.after(() => fs.rm(home, { recursive: true, force: true }));
+  await fs.writeFile(path.join(home, 'models_cache.json'), JSON.stringify({ models: [
+    { slug: 'hidden', display_name: 'Hidden', visibility: 'hide', priority: 0 },
+    { slug: 'model-a', display_name: 'Model A', visibility: 'list', priority: 1 },
+    { slug: 'model-b', display_name: 'Model B', visibility: 'list', priority: 2 }
+  ] }));
+  assert.deepEqual(await cachedModels({ CODEX_HOME: home }), [
+    { id: 'model-a', name: 'Model A', default: true },
+    { id: 'model-b', name: 'Model B', default: false }
+  ]);
+});
 async function setup(t, run) {
   await fs.mkdir('.compat/tests', { recursive: true });
   const temp = await fs.mkdtemp(path.resolve('.compat/tests/bridge-flow-')); t.after(() => fs.rm(temp, { recursive: true, force: true }));

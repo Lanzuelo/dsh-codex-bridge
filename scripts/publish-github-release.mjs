@@ -19,7 +19,7 @@ Fixes bundle activation: versions 0.1.0 and 0.1.1 used an override for a nonexis
 
 Version 0.1.3 waits for model discovery to exit and retries temporary-directory cleanup, preventing a Windows EBUSY error after /codex models.
 
-Version 0.2.0 adds the primary Harness panel workflow, automatic no-Git project review, optional review focus/files, one-click DeepSeek handoff, and direct Codex fixes for actionable complete or incomplete reviews.
+Version 0.2.1 fixes model-list loading inside the DSH sandbox and makes model loading and selection visible in the panel.
 
 ## Install in Harness
 Paste the npm package name in Plugins → Add package:
