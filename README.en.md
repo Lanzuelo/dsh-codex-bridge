@@ -1,4 +1,4 @@
-# DSH Codex Bridge
+# DSH Codex Architect
 
 [Русский](README.md) · [Compatibility report](COMPATIBILITY_REPORT.md) · [Publishing](PUBLISHING.md)
 
@@ -11,10 +11,10 @@ is required. Subscription quotas still apply.
 
 ## Install
 
-For the npm release, use `dsh-codex-architect@0.1.1` in Harness's Plugins manager once registry publication is confirmed. The existing GitHub 0.1.0 preview remains available at:
+In Harness's Plugins manager, enter **`dsh-codex-architect`**. npm latest is **0.1.1**. To pin it, enter `dsh-codex-architect@0.1.1`. The versioned GitHub source is:
 
 ```text
-github:Lanzuelo/dsh-codex-bridge#v0.1.0
+github:Lanzuelo/dsh-codex-bridge#v0.1.1
 ```
 
 Alternatively, download the `.tgz` from [GitHub Releases](https://github.com/Lanzuelo/dsh-codex-bridge/releases)

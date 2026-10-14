@@ -1,7 +1,8 @@
 # Publishing DSH Codex Architect
 
 Public source: https://github.com/Lanzuelo/dsh-codex-bridge
-npm package prepared for publication: dsh-codex-architect@0.1.1.
+Published npm package: https://www.npmjs.com/package/dsh-codex-architect (latest 0.1.1).
+Registry metadata and the published tarball checksum were verified.
 The previous package name dsh-codex-bridge belongs to an unrelated npm project.
 
 ## Publication checklist
@@ -21,7 +22,7 @@ The npm account may differ from the GitHub account. First publication can requir
 
 Harness → Plugins → Add package: dsh-codex-architect
 
-This short-name instruction is usable only after npm publication is confirmed.
+Registry publication is confirmed; the short name resolves to version 0.1.1.
 An exact version can be requested with dsh-codex-architect@0.1.1.
 The existing GitHub-only 0.1.0 preview remains available at
 github:Lanzuelo/dsh-codex-bridge#v0.1.0.
