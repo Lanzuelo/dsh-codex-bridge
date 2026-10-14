@@ -118,4 +118,3 @@ npm.cmd pack --ignore-scripts --pack-destination artifacts
 ```
 
 Для полного теста junction нужны права на его создание. `scripts/inspect-runtime.mjs <полный путь app.asar>` копирует выбранные файлы установленного runtime в игнорируемый `.compat`, не меняя установку. `scripts/runtime-smoke.mjs` проверяет загрузку с реальными пакетами через `--import ./scripts/runtime-loader.mjs`. `scripts/diagnose.mjs <codex.exe>` проверяет вход и каталог без inference; `scripts/inference-smoke.mjs <codex.exe> <model>` выполняет один модельный запрос и расходует квоту.
-

@@ -101,4 +101,3 @@ smoke test consumes subscription quota and is never run by CI.
 
 MIT licensed. This is an independent integration, not an official OpenAI or
 DeepSeek product.
-
