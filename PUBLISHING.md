@@ -1,53 +1,42 @@
-# Publishing this project
+# Publishing DSH Codex Architect
 
-## Current state
+Public source: https://github.com/Lanzuelo/dsh-codex-bridge
+npm package prepared for publication: dsh-codex-architect@0.1.1.
+The previous package name dsh-codex-bridge belongs to an unrelated npm project.
 
-The public source repository is [Lanzuelo/dsh-codex-bridge](https://github.com/Lanzuelo/dsh-codex-bridge).
-The project is an independent preview, not an official OpenAI/DeepSeek plugin.
-Release tags and attached tarballs are managed separately from npm publication.
+## Publication checklist
 
-`dsh-codex-bridge` is already registered on npm by an unrelated project. **Do not
-run `npm publish` with the current unscoped package name.** The working package
-name remains suitable for local/Git-source installation, but npm publication
-requires an available name or a scope owned by the authenticated npm account.
-A GitHub username does not establish ownership of the same npm scope.
+1. Authenticate through npm's official browser login; never put credentials in source files.
+2. Run syntax checks, core tests and the actual Harness runtime smoke test.
+3. Review npm pack output, unpack the archive and verify package.json, bundle module name and browser ModuleLoader ID all use dsh-codex-architect.
+4. Publish the exact reviewed tarball with public access. Keep the default latest tag so Harness can resolve the short name; documentation must retain the preview compatibility limitations.
+5. Verify registry name, version, repository, integrity and actual download/install of dsh-codex-architect@0.1.1.
+6. Push the reviewed source to GitHub, tag v0.1.1 and attach the exact published archive/checksum to a preview release.
+7. Only after registry verification state that installation by the short name is available.
 
-## GitHub preview release
+The npm account may differ from the GitHub account. First publication can require
+2FA or a browser confirmation. The user enters credentials on npm itself.
 
-1. Connect GitHub and confirm access to `Lanzuelo`.
-2. Review the exact source set. `.compat`, extracted vendor code, local state,
-   credentials, caches, `node_modules` and artifacts are excluded from Git.
-3. Run the syntax checks, core tests and a local tarball inspection. Verify
-   installation in a separate official Desktop 0.2.0-rc.2 profile before calling
-   it fully Desktop-tested. Keep preview limitations explicit otherwise.
-4. Create the public repository and push the source. Add GitHub topic `dsh-plugin`
-   for discoverability; this does not itself guarantee a marketplace listing.
-5. After CI passes, tag the reviewed commit `v0.1.0`, create a preview release,
-   attach the generated `.tgz`, and publish its SHA-256 checksum.
-6. Test `github:Lanzuelo/dsh-codex-bridge#v0.1.0` in a separate profile. Only then
-   update installation documentation from "planned" to "available".
+## Distribution
 
-GitHub publication allows a Git install source. It does not make the short
-package name available through the npm registry.
+Harness → Plugins → Add package: dsh-codex-architect
 
-## npm publication
+This short-name instruction is usable only after npm publication is confirmed.
+An exact version can be requested with dsh-codex-architect@0.1.1.
+The existing GitHub-only 0.1.0 preview remains available at
+github:Lanzuelo/dsh-codex-bridge#v0.1.0.
 
-1. Sign in to npm locally; never paste credentials or OTPs into an issue/chat.
-2. Choose an available package name or an owned scope. A possible scoped shape
-   is `@YOUR_NPM_USER/dsh-codex-bridge`; verify ownership before using it.
-3. Update `package.json` name, the bundle row's module name in `cordis.patch.yml`,
-   browser ModuleLoader registration ID in `src/client.js`, its contract test,
-   and installation examples together. Keep the command name `/codex` and stable
-   plugin state semantics unchanged.
-4. Re-run tests, pack/unpack and Host-loading checks after the rename.
-5. Review `npm pack --dry-run`, then publish the **exact reviewed version** with
-   public access and an appropriate preview dist-tag.
-6. Verify the registry's name/version/repository metadata and install the exact
-   version in an isolated Harness profile before advertising short-name install.
+Do not install the old GitHub package and the new npm package simultaneously in
+one Harness profile: both register /codex. Disable/remove the old plugin before
+switching sources. Existing ~/.dsh-codex-bridge state is preserved by the rename.
 
-Subsequent CI publication can use npm trusted publishing (OIDC) after the package
-and publisher relationship are configured. This repository currently has **no
-automatic publish workflow** and stores no publishing token.
+Subsequent CI publication can use npm trusted publishing (OIDC), once configured
+for the actual npm package owner. There is no automatic npm publish workflow or
+publishing token in this repository.
 
-References: [npm public packages](https://docs.npmjs.com/creating-and-publishing-unscoped-public-packages/),
-[npm trusted publishing](https://docs.npmjs.com/trusted-publishers/).
+This is an independent MIT-licensed preview for official Harness Desktop
+0.2.0-rc.2 on Windows, not an official OpenAI/DeepSeek product. Live Desktop
+installation remains an outstanding acceptance check.
+
+References: https://docs.npmjs.com/cli/commands/npm-publish/ and
+https://docs.npmjs.com/trusted-publishers/.

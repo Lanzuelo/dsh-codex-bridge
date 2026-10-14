@@ -1,9 +1,10 @@
 {
-  "name": "dsh-codex-bridge",
-  "version": "0.1.0",
+  "name": "dsh-codex-architect",
+  "version": "0.1.1",
   "description": "Codex architect and read-only reviewer for DeepSeek Harness Desktop",
   "type": "module",
   "license": "MIT",
+  "publishConfig": { "access": "public", "registry": "https://registry.npmjs.org/" },
   "repository": { "type": "git", "url": "git+https://github.com/Lanzuelo/dsh-codex-bridge.git" },
   "homepage": "https://github.com/Lanzuelo/dsh-codex-bridge#readme",
   "bugs": { "url": "https://github.com/Lanzuelo/dsh-codex-bridge/issues" },

@@ -1,10 +1,10 @@
 /* Harness 0.2.0-rc.2 browser module format; React and RPC come from the host. */
 window.__ModuleLoader__.load({
-  id: 'dsh-codex-bridge',
+  id: 'dsh-codex-architect',
   factory: require => {
     const React = require('react');
     const h = React.createElement;
-    const ID = 'dsh-codex-bridge';
+    const ID = 'dsh-codex-architect';
     const css = {
       root: { height: '100%', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', gap: 10, padding: 14, overflow: 'auto', color: 'var(--dsw-alias-label-primary)', background: 'var(--dsw-alias-bg-base)', fontSize: 13 },
       row: { display: 'flex', gap: 6, flexWrap: 'wrap', alignItems: 'center' },

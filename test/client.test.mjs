@@ -7,7 +7,7 @@ test('client module registers the panel and uses the existing scoped command RPC
   let module, body, registration, tabType;
   const disposers = [], calls = [];
   const fakeReact = { createElement() {} };
-  const window = { __ModuleLoader__: { load(value) { assert.equal(value.id, 'dsh-codex-bridge'); module = value.factory(name => { assert.equal(name, 'react'); return fakeReact; }); } } };
+  const window = { __ModuleLoader__: { load(value) { assert.equal(value.id, 'dsh-codex-architect'); module = value.factory(name => { assert.equal(name, 'react'); return fakeReact; }); } } };
   vm.runInNewContext(await fs.readFile(new URL('../src/client.js', import.meta.url), 'utf8'), { window });
   const ctx = {
     effect(factory) { disposers.push(factory()); },

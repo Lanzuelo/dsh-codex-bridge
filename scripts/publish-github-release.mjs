@@ -5,8 +5,9 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
 
-const owner = 'Lanzuelo', repository = 'dsh-codex-bridge', tag = 'v0.1.0';
-const archiveName = 'dsh-codex-bridge-0.1.0.tgz';
+const manifest = JSON.parse(await fs.readFile('package.json', 'utf8'));
+const owner = 'Lanzuelo', repository = 'dsh-codex-bridge', tag = `v${manifest.version}`;
+const archiveName = `${manifest.name}-${manifest.version}.tgz`;
 const directory = path.resolve('artifacts');
 const archive = await fs.readFile(path.join(directory, archiveName));
 const checksum = createHash('sha256').update(archive).digest('hex');
@@ -15,17 +16,19 @@ if (expected !== `${checksum}  ${archiveName}`) throw new Error('Checksum mismat
 const body = `Initial preview for official DeepSeek Harness Desktop 0.2.0-rc.2 on Windows.
 
 ## Install in Harness
-Paste this source in Plugins → Add package:
+Paste the npm package name in Plugins → Add package:
 \`\`\`text
-github:Lanzuelo/dsh-codex-bridge#v0.1.0
+${manifest.name}
 \`\`\`
+Exact version: ${manifest.name}@${manifest.version}.
+Alternative Git source: github:${owner}/${repository}#${tag}.
 Or download the attached .tgz and use its absolute local path.
 
 Includes a Codex sidebar, per-role model selection, read-only architecture/review requests, exact file approval, checkpoints and explicit DeepSeek handoff. Uses Codex CLI ChatGPT sign-in; no OpenAI API key or automatic paid fallback.
 
 Validation: 13 local tests, real Harness CommandRuntime load/unload, browser panel fixture, one successful gpt-5.6-sol request, and GitHub Actions on Windows/Linux. Full installation inside a live Desktop profile is not yet verified. Automatic reviews and dependency installation are excluded.
 
-IMPORTANT: the npm name dsh-codex-bridge belongs to an unrelated project. Use this GitHub source or the attached archive.
+IMPORTANT: the old npm name dsh-codex-bridge belongs to an unrelated project. Use ${manifest.name}. Disable/remove an old Bridge installation before switching sources: both register /codex. Existing local state is preserved.
 
 SHA-256 (${archiveName}):
 \`\`\`text

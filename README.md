@@ -2,14 +2,14 @@
 
 [English](README.en.md) · [Публикация](PUBLISHING.md) · [История изменений](CHANGELOG.md)
 
-Плагин для **официального DeepSeek Harness Desktop 0.2.0-rc.2 на Windows**. Codex проектирует архитектуру и проверяет изменения, DeepSeek выполняет основную разработку. Версия плагина: **0.1.0, предварительный выпуск**.
+Плагин для **официального DeepSeek Harness Desktop 0.2.0-rc.2 на Windows**. Codex проектирует архитектуру и проверяет изменения, DeepSeek выполняет основную разработку. Версия плагина: **0.1.1, предварительный выпуск**. Имя пакета npm: **dsh-codex-architect**.
 
 В одном окне Harness доступны команда `/codex` и вкладка **Codex Bridge** в правой панели. Плагин использует установленный Codex CLI с входом через ChatGPT. OpenAI API-ключ не требуется; перехода на платный API и автоматической замены модели нет.
 
 ## Установка
 
 1. Проверьте, что установлены Harness **0.2.0-rc.2**, Git и Codex CLI; в Codex выполнен вход через ChatGPT. Подтверждённая версия CLI: **0.162.0-alpha.17.2**. Для этой alpha-версии интерфейс может измениться после обновления.
-2. В Harness откройте **Plugins / Плагины**, выберите добавление пакета и укажите `github:Lanzuelo/dsh-codex-bridge#v0.1.0`. Альтернатива — скачать `.tgz` из [GitHub Releases](https://github.com/Lanzuelo/dsh-codex-bridge/releases) и указать полный абсолютный путь к нему. **Имя `dsh-codex-bridge` в npm принадлежит другому проекту: не устанавливайте его как этот плагин.**
+2. В Harness откройте **Plugins / Плагины**, выберите добавление пакета и укажите `dsh-codex-architect@0.1.1` после подтверждения публикации в npm. Для установки доступного GitHub-выпуска 0.1.0 укажите `github:Lanzuelo/dsh-codex-bridge#v0.1.0`. Альтернатива — скачать `.tgz` из [GitHub Releases](https://github.com/Lanzuelo/dsh-codex-bridge/releases) и указать полный абсолютный путь к нему. **Имя `dsh-codex-bridge` в npm принадлежит другому проекту: не устанавливайте его как этот плагин.**
 3. Дождитесь успешной активации и перезапустите Harness, если менеджер этого попросит.
 4. В чате проекта введите `/codex help`. В правой панели через `+` / страницу выбора вкладок откройте **Codex Bridge**.
 5. Нажмите **Загрузить модели**, выберите модель и сохраните её. Можно выбрать одну модель для всех ролей, отдельную для каждой роли или ввести ID вручную. `default` означает штатный default Codex с изолированной конфигурацией запуска.
@@ -20,7 +20,7 @@
 
 ```yaml
 - id: codex-bridge
-  name: dsh-codex-bridge
+  name: dsh-codex-architect
   config:
     codexPath: 'C:\Users\USERNAME\AppData\Local\OpenAI\Codex\bin\VERSION\codex.exe'
     # Необязательно: отдельное локальное хранилище вне каталога проекта.
@@ -118,3 +118,4 @@ npm.cmd pack --ignore-scripts --pack-destination artifacts
 ```
 
 Для полного теста junction нужны права на его создание. `scripts/inspect-runtime.mjs <полный путь app.asar>` копирует выбранные файлы установленного runtime в игнорируемый `.compat`, не меняя установку. `scripts/runtime-smoke.mjs` проверяет загрузку с реальными пакетами через `--import ./scripts/runtime-loader.mjs`. `scripts/diagnose.mjs <codex.exe>` проверяет вход и каталог без inference; `scripts/inference-smoke.mjs <codex.exe> <model>` выполняет один модельный запрос и расходует квоту.
+
