@@ -1,0 +1,14 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import { CodexRunner } from '../src/codex.mjs';
+import { discoverModels } from '../src/catalog.mjs';
+import { runProcess } from '../src/process.mjs';
+const executable = process.argv[2] || 'codex';
+const directory = path.resolve('.compat/diagnostic');
+await fs.mkdir(directory, { recursive: true });
+const runner = new CodexRunner({ executable, stateDirectory: directory });
+const version = await runProcess(executable, ['--version'], { cwd: directory });
+console.log(version.stdout.trim());
+await runner.auth();
+console.log('Authentication: ChatGPT (no account details logged)');
+console.log(JSON.stringify(await discoverModels(executable, { cwd: directory, env: runner.environment() }), null, 2));

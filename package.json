@@ -1,0 +1,22 @@
+{
+  "name": "dsh-codex-bridge",
+  "version": "0.1.0",
+  "description": "Codex architect and read-only reviewer for DeepSeek Harness Desktop",
+  "type": "module",
+  "license": "MIT",
+  "repository": { "type": "git", "url": "git+https://github.com/Lanzuelo/dsh-codex-bridge.git" },
+  "homepage": "https://github.com/Lanzuelo/dsh-codex-bridge#readme",
+  "bugs": { "url": "https://github.com/Lanzuelo/dsh-codex-bridge/issues" },
+  "keywords": ["dsh-plugin", "deepseek-harness", "codex", "code-review", "architecture"],
+  "main": "src/index.mjs",
+  "exports": { ".": "./src/index.mjs", "./client": "./src/client.js" },
+  "files": ["src", "cordis.patch.yml", "README.md", "README.en.md", "CHANGELOG.md", "PUBLISHING.md", "COMPATIBILITY_REPORT.md", "LICENSE"],
+  "engines": { "node": ">=24", "dsh": "0.2.0-rc.2" },
+  "peerDependencies": { "@deepseek-ai/dsh-commands": "0.2.0-rc.2", "@deepseek-ai/dsh-llm": "0.2.0-rc.2", "@deepseek-ai/cordis": "~4.0.4" },
+  "dsh": {
+    "manifestVersion": 1,
+    "bundle": { "patch": "./cordis.patch.yml" },
+    "client": { "platform": "web", "inject": ["@deepseek-ai/dsh-api-remotes", "@deepseek-ai/dsh-client-ui-sidebar-right"] }
+  },
+  "scripts": { "test": "node --test test/*.test.mjs", "check": "node scripts/check.mjs", "pack": "npm pack --ignore-scripts", "diagnose": "node scripts/diagnose.mjs" }
+}

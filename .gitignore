@@ -1,0 +1,4 @@
+.compat/
+node_modules/
+artifacts/
+*.tgz
