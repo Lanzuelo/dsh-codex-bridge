@@ -9,6 +9,7 @@ import { collectContext } from './context.mjs';
 import { prepareChanges, changeDigest, applyChanges, restoreChanges } from './changes.mjs';
 import { BridgeError } from './errors.mjs';
 import { locateCodex } from './locate.mjs';
+import { removeTemporary } from './paths.mjs';
 
 export const HELP = `DSH Codex Bridge
 /codex status — состояние и задания этого чата
@@ -96,7 +97,7 @@ export class Bridge {
         try {
           const models = await this.catalog(this.runner.executable, { signal: invocation.signal, env: this.runner.environment?.(), cwd: scratch });
           return { kind: 'success', text: rest === 'json' ? JSON.stringify({ models }) : `Каталог Codex (доступ окончательно проверяется запросом):\n${models.map(model => `${model.default ? '* ' : ''}${model.id} — ${model.name}`).join('\n')}\nВыбор: /codex model all <ID>. Модель по умолчанию: /codex model all default.` };
-        } finally { await fs.rm(scratch, { recursive: true, force: true }); }
+        } finally { await removeTemporary(scratch); }
       }
       const root = invocation.agent.session.header.cwd;
       if (!root) throw new BridgeError('workspace', 'Чат не привязан к каталогу проекта. Откройте проект в Harness.');

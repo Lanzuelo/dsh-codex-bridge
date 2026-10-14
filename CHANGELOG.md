@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.3 — 2026-10-14
+
+- Wait for the Codex model-catalog process to exit before removing its working
+  directory, preventing a Windows `EBUSY` error after `/codex models`.
+- Retry removal of short-lived Codex working directories while Windows releases
+  process handles.
+
 ## 0.1.2 — 2026-10-14
 
 - Fix the bundle patch to insert the plugin row. Previous versions incorrectly

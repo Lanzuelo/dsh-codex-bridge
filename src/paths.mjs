@@ -4,6 +4,7 @@ import { createHash } from 'node:crypto';
 import { BridgeError } from './errors.mjs';
 
 export const sha = value => createHash('sha256').update(value).digest('hex');
+export const removeTemporary = target => fs.rm(target, { recursive: true, force: true, maxRetries: 10, retryDelay: 100 });
 export const ignoredDirectory = name => /^(\.git|\.hg|\.svn|node_modules|\.venv|venv|dist|build|coverage|\.next|\.compat|\.aws|\.ssh|\.codex|\.agents|\.dsh-codex-bridge)$/i.test(name);
 export function sensitive(file) {
   return file.split('/').some(part => /^(\.env(?!\.example$).*|\.npmrc|\.pypirc|auth\.json|credentials.*|secrets?.*|id_rsa.*|id_ed25519.*)$/i.test(part) || /\.(pem|key|p12|pfx|keystore)$/i.test(part));

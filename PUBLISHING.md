@@ -1,7 +1,7 @@
 # Publishing DSH Codex Architect
 
 Public source: https://github.com/Lanzuelo/dsh-codex-bridge
-Published npm package: https://www.npmjs.com/package/dsh-codex-architect (latest 0.1.2).
+Published npm package: https://www.npmjs.com/package/dsh-codex-architect (latest 0.1.3).
 Registry metadata and the published tarball checksum were verified.
 The previous package name dsh-codex-bridge belongs to an unrelated npm project.
 
@@ -11,8 +11,8 @@ The previous package name dsh-codex-bridge belongs to an unrelated npm project.
 2. Run syntax checks, core tests and the actual Harness runtime smoke test.
 3. Review npm pack output, unpack the archive and verify package.json, bundle module name and browser ModuleLoader ID all use dsh-codex-architect.
 4. Publish the exact reviewed tarball with public access. Keep the default latest tag so Harness can resolve the short name; documentation must retain the preview compatibility limitations.
-5. Verify registry name, version, repository, integrity and actual download/install of dsh-codex-architect@0.1.2.
-6. Push the reviewed source to GitHub, tag v0.1.2 and attach the exact published archive/checksum to a preview release.
+5. Verify registry name, version, repository, integrity and actual download/install of dsh-codex-architect@0.1.3.
+6. Push the reviewed source to GitHub, tag v0.1.3 and attach the exact published archive/checksum to a preview release.
 7. Only after registry verification state that installation by the short name is available.
 
 The npm account may differ from the GitHub account. First publication can require
@@ -22,8 +22,8 @@ The npm account may differ from the GitHub account. First publication can requir
 
 Harness → Plugins → Add package: dsh-codex-architect
 
-Registry publication is confirmed; the short name resolves to version 0.1.2.
-An exact version can be requested with dsh-codex-architect@0.1.2.
+Registry publication is confirmed; the short name resolves to version 0.1.3.
+An exact version can be requested with dsh-codex-architect@0.1.3.
 The existing GitHub-only 0.1.0 preview remains available at
 github:Lanzuelo/dsh-codex-bridge#v0.1.0.
 

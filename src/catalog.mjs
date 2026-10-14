@@ -5,18 +5,21 @@ import { BridgeError } from './errors.mjs';
 export function discoverModels(executable = 'codex', { signal, timeout = 25_000, env = process.env, cwd } = {}) {
   return new Promise((resolve, reject) => {
     const child = spawn(executable, ['app-server', '--stdio', '-c', 'forced_login_method="chatgpt"', '-c', 'model_provider="openai"'], { cwd, env, shell: false, windowsHide: true, stdio: ['pipe', 'pipe', 'pipe'] });
-    let buffer = '', bytes = 0, result = [], nextId = 2, finished = false;
+    let buffer = '', bytes = 0, result = [], nextId = 2, finished = false, outcome;
     const send = value => child.stdin.write(JSON.stringify(value) + '\n');
     function finish(error) {
       if (finished) return; finished = true;
       clearTimeout(timer); signal?.removeEventListener('abort', abort);
+      outcome = error;
       child.stdin.end(); child.kill();
-      if (error) reject(error); else resolve(result);
     }
     const abort = () => finish(new BridgeError('cancelled', 'Операция отменена.'));
     const timer = setTimeout(() => finish(new BridgeError('catalog', 'Каталог недоступен. Укажите поддерживаемый ID вручную; автоматической замены нет.')), timeout);
     child.on('error', () => finish(new BridgeError('catalog', 'Не удалось запустить Codex app-server.')));
-    child.on('close', () => { if (!finished) finish(new BridgeError('catalog', 'App-server завершился до получения каталога.')); });
+    child.on('close', () => {
+      if (!finished) return finish(new BridgeError('catalog', 'App-server завершился до получения каталога.'));
+      if (outcome) reject(outcome); else resolve(result);
+    });
     child.stdin.on('error', () => {}); child.stderr.resume(); child.stdout.setEncoding('utf8');
     child.stdout.on('data', chunk => {
       bytes += Buffer.byteLength(chunk); buffer += chunk;

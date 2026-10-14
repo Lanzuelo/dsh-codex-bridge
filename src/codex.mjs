@@ -3,6 +3,7 @@ import path from 'node:path';
 import { runProcess } from './process.mjs';
 import { BridgeError, classifyError } from './errors.mjs';
 import { resultSchema, validateResult } from './result.mjs';
+import { removeTemporary } from './paths.mjs';
 
 export function modelId(value) {
   if (value === 'default') return null;
@@ -69,7 +70,7 @@ export class CodexRunner {
       return validateResult(parsed, job.kind);
     } finally {
       // Scratch is a directory made by this invocation, never the project directory.
-      await fs.rm(scratch, { recursive: true, force: true });
+      await removeTemporary(scratch);
     }
   }
 }

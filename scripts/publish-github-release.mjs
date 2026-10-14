@@ -17,6 +17,8 @@ const body = `Preview for official DeepSeek Harness Desktop 0.2.0-rc.2 on Window
 
 Fixes bundle activation: versions 0.1.0 and 0.1.1 used an override for a nonexistent entry, so Harness skipped loading the plugin. Version 0.1.2 inserts the entry correctly. Update the package and fully restart Harness; verify /codex help before submitting a plan. Regression checked with Harness's actual applyEntryPatches loader.
 
+Version 0.1.3 waits for model discovery to exit and retries temporary-directory cleanup, preventing a Windows EBUSY error after /codex models.
+
 ## Install in Harness
 Paste the npm package name in Plugins → Add package:
 \`\`\`text
