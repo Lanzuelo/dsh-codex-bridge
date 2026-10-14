@@ -41,8 +41,10 @@ export async function collectContext(directory, { review = false, selected = [],
       diff = result.stdout;
     }
   }
-  const scope = selected.length ? selected : review ? changed : tree.filter(file => metadata.test(file));
-  if (review && !isGit && !selected.length) throw new BridgeError('git', 'Без Git укажите файлы явно: /codex review src/file.js');
+  // Without Git there is no baseline, so a review covers the bounded safe tree.
+  // The result tells Codex that no diff/HEAD is available; it must report that
+  // limitation rather than pretending to identify regressions.
+  const scope = selected.length ? selected : review ? (isGit ? changed : tree) : tree.filter(file => metadata.test(file));
   if (selected.some(file => !tree.includes(file) && !changed.includes(file))) throw new BridgeError('path', 'Выбранный файл не найден в проекте.');
   const candidates = [...new Set([...scope, ...tree.filter(file => metadata.test(file))])];
   const files = [], omitted = []; let size = Buffer.byteLength(diff);

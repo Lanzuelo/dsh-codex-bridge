@@ -22,6 +22,8 @@ test('client module registers the panel and uses the existing scoped command RPC
   const props = registration.inject('selected-session'), signal = new AbortController().signal;
   assert.equal((await props.execute(props.sessionId, 'review', signal)).text, 'ok');
   assert.equal(calls[0][0], 'selected-session'); assert.equal(calls[0][1], '/codex review'); assert.equal(calls[0][3], signal);
+  const source = await fs.readFile(new URL('../src/client.js', import.meta.url), 'utf8');
+  for (const text of ['Построить план', 'Проверить проект', 'Исправить в DeepSeek', 'Подготовить в Codex', 'Применить просмотренное', "run(`handoff ${job.id}`)", "run(`fix ${job.id}`)"]) assert.match(source, new RegExp(text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   ctx.remote.commands.execute = async () => ({ ok: false, error: new Error('offline') });
   await assert.rejects(props.execute('selected-session', 'review', signal), /offline/);
 });

@@ -93,6 +93,22 @@ test('Git snapshot captures staged, unstaged, deleted and untracked files withou
   assert(snapshot.context.files.some(file => file.path === 'new.txt'));
   assert(!JSON.stringify(snapshot.context).includes('do-not-send'));
 });
+
+test('review without Git safely snapshots the bounded project instead of requiring paths', async t => {
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), 'dsh-codex-no-git-'));
+  t.after(() => fs.rm(root, { recursive: true, force: true }));
+  await fs.mkdir(path.join(root, 'src'));
+  await fs.writeFile(path.join(root, 'src/app.js'), 'export const app = true;\n');
+  await fs.writeFile(path.join(root, '.env'), 'SECRET=do-not-send\n');
+  await fs.mkdir(path.join(root, 'node_modules'));
+  await fs.writeFile(path.join(root, 'node_modules/ignored.js'), 'ignored');
+  const snapshot = await collectContext(root, { review: true });
+  assert.equal(snapshot.context.git.available, false);
+  assert.equal(snapshot.hasChanges, true);
+  assert(snapshot.context.files.some(file => file.path === 'src/app.js'));
+  assert(!JSON.stringify(snapshot.context).includes('do-not-send'));
+  assert(!snapshot.context.tree.some(file => file.includes('node_modules')));
+});
 test('process cancellation terminates active child', async () => {
   const controller = new AbortController();
   const running = runProcess(process.execPath, ['-e', 'setInterval(()=>{},1000)'], { signal: controller.signal });

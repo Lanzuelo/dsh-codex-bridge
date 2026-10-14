@@ -5,18 +5,18 @@
 Use Codex as an architect and reviewer while DeepSeek handles implementation,
 inside DeepSeek Harness. Includes a sidebar and the `/codex` command.
 
-**Preview 0.1.3.** npm package: **dsh-codex-architect**. Targets the **official Windows Desktop 0.2.0-rc.2** only.
+**Preview 0.2.0.** npm package: **dsh-codex-architect**. Targets the **official Windows Desktop 0.2.0-rc.2** only.
 Codex CLI **0.162.0-alpha.17.2** was tested with ChatGPT sign-in. No OpenAI API key
 is required. Subscription quotas still apply.
 
-Versions **0.1.0 and 0.1.1** had a bundle activation bug. Version **0.1.3** also fixes a Windows `EBUSY` error after `/codex models`. Update and restart Harness. A direct CLI call made by DeepSeek is not a plugin job.
+Versions **0.1.0 and 0.1.1** had a bundle activation bug. Version **0.1.3** fixed a Windows `EBUSY` error after `/codex models`. Version **0.2.0** adds the primary visual workflow and shorter commands. Update and restart Harness.
 
 ## Install
 
-In Harness's Plugins manager, enter **`dsh-codex-architect`**. npm latest is **0.1.3**. To pin it, enter `dsh-codex-architect@0.1.3`. The versioned GitHub source is:
+In Harness's Plugins manager, enter **`dsh-codex-architect`**. npm latest is **0.2.0**. To pin it, enter `dsh-codex-architect@0.2.0`. The versioned GitHub source is:
 
 ```text
-github:Lanzuelo/dsh-codex-bridge#v0.1.3
+github:Lanzuelo/dsh-codex-bridge#v0.2.0
 ```
 
 Alternatively, download the `.tgz` from [GitHub Releases](https://github.com/Lanzuelo/dsh-codex-bridge/releases)
@@ -26,41 +26,50 @@ and pass its absolute local path to the manager.
 Do not install that registry package expecting this implementation. A separate
 registry name or an owned npm scope must be chosen before npm publication.
 
-The live Desktop installation remains to be tested. The core has passed 13 tests,
-an actual Harness CommandRuntime smoke test, a browser panel fixture and one
+The live Desktop installation remains to be tested. The core has passed 20 tests,
+an actual Harness CommandRuntime smoke test, an interactive browser panel fixture and one
 real `gpt-5.6-sol` inference request. Other Harness versions are unverified.
 
-## Workflow
+## Visual workflow
+
+The **Codex Bridge** tab is the primary interface. It provides DeepSeek, Codex,
+and Codex → DeepSeek modes; project planning; automatic project review; optional
+focus/files; job cards; a DeepSeek/Codex fix choice; proposal inspection; exact
+apply confirmation; restore, retry, cancel and role-specific model selection.
+Slash commands remain available for automation and diagnostics.
+
+## Command workflow
 
 ```text
 /codex models
 /codex model all <supported-model-id>
 /codex plan Build a Telegram bot with PostgreSQL
-/codex scaffold <plan-id> 1
-/codex show <proposal-id>
-/codex apply <proposal-id> <confirmation-code>
-/codex handoff <proposal-id> Implement user registration
+/codex handoff <plan-id>
 ```
 
-`plan` does not write files. `scaffold` proposes the selected architecture's files.
-Only `apply` writes the exact approved proposal, after recording a checkpoint.
-Later user edits are protected. To restore:
+`plan` does not write files. A handoff without extra text sends the recommended
+architecture to DeepSeek for implementation. In Codex mode the panel can prepare
+a selected option as a file proposal. Only `apply` writes an exact approved
+proposal after recording a checkpoint. Later user edits are protected. To restore:
 
 ```text
 /codex restore <proposal-id> <confirmation-code>
 ```
 
-Review staged, unstaged, deleted and untracked changes, or select files explicitly:
+Review Git changes automatically. Without Git, the same command reviews the
+bounded safe project snapshot and reports the missing baseline as a limitation:
 
 ```text
 /codex review
-/codex review src/auth.ts | src/auth.test.ts
-/codex handoff <review-id> Address high-priority findings
+/codex review focus Pay special attention to corrupted storage
+/codex review files src/auth.ts|src/auth.test.ts --focus validation
+/codex handoff <review-id>
+/codex fix <review-id>
 ```
 
-DeepSeek receives findings first. An explicit escalation can request a Codex fix
-proposal using `/codex fix <review-id> <specific instruction>`. Applying fixes
-still requires a separate confirmation.
+The user chooses DeepSeek or Codex immediately. Both commands have safe default
+tasks and accept actionable findings from an `incomplete` review. Codex only
+prepares a proposal; applying its files still requires separate confirmation.
 
 Models can be shared or assigned to `architect`, `review`, and `fix`. `default`
 uses Codex's isolated-launch default. Model discovery is explicit; IDs are not

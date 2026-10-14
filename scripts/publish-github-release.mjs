@@ -19,6 +19,8 @@ Fixes bundle activation: versions 0.1.0 and 0.1.1 used an override for a nonexis
 
 Version 0.1.3 waits for model discovery to exit and retries temporary-directory cleanup, preventing a Windows EBUSY error after /codex models.
 
+Version 0.2.0 adds the primary Harness panel workflow, automatic no-Git project review, optional review focus/files, one-click DeepSeek handoff, and direct Codex fixes for actionable complete or incomplete reviews.
+
 ## Install in Harness
 Paste the npm package name in Plugins → Add package:
 \`\`\`text
@@ -30,7 +32,7 @@ Or download the attached .tgz and use its absolute local path.
 
 Includes a Codex sidebar, per-role model selection, read-only architecture/review requests, exact file approval, checkpoints and explicit DeepSeek handoff. Uses Codex CLI ChatGPT sign-in; no OpenAI API key or automatic paid fallback.
 
-Validation: 13 local tests, real Harness CommandRuntime load/unload, browser panel fixture, one successful gpt-5.6-sol request, and GitHub Actions on Windows/Linux. Full installation inside a live Desktop profile is not yet verified. Automatic reviews and dependency installation are excluded.
+Validation: 20 local tests, real Harness CommandRuntime load/unload, interactive browser panel fixture, one successful gpt-5.6-sol request, and GitHub Actions on Windows/Linux. Full installation inside a live Desktop profile is not yet verified. Automatic reviews and dependency installation are excluded.
 
 IMPORTANT: the old npm name dsh-codex-bridge belongs to an unrelated project. Use ${manifest.name}. Disable/remove an old Bridge installation before switching sources: both register /codex. Existing local state is preserved.
 

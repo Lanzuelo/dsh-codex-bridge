@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.2.0 — 2026-10-14
+
+- Make the Codex Bridge panel the primary workflow: project idea, role-specific
+  models, automatic review, job cards, DeepSeek/Codex fix choice, proposal
+  inspection, explicit apply, retry, cancel and restore.
+- Let `/codex review` inspect the bounded safe project snapshot when Git is not
+  available; add explicit `focus` and `files` modes.
+- Let `/codex handoff <id>` and `/codex fix <review-id>` use safe default tasks,
+  including actionable findings from `incomplete` reviews.
+- Remove the mandatory DeepSeek handoff before a Codex fix and keep file writes
+  behind exact proposal confirmation.
+- Add direct DeepSeek delegation for the panel without starting Codex.
+- Give scaffold documentation fixed root paths in its structured schema.
+- Add a session dashboard endpoint for stages, jobs, findings and available
+  actions without exposing full captured source snapshots.
+
 ## 0.1.3 — 2026-10-14
 
 - Wait for the Codex model-catalog process to exit before removing its working

@@ -9,7 +9,7 @@ export function apply(ctx, config = {}) {
     definitionId: 'dsh-codex-bridge/command',
     name: 'codex',
     description: 'Codex: архитектура, модели и ревью без изменения файлов',
-    input: { hint: 'help | plan <задача> | review | models | status' },
+    input: { hint: 'plan <идея> | review | handoff <id> | fix <id> | models | status' },
     handler: invocation => bridge.handle(invocation, text => invocation.agent.followup(createUserMessage({ content: [{ type: 'text', text }], source: { kind: 'user' } })))
   });
   ctx.on('dispose', () => bridge.close());

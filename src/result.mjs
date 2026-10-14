@@ -18,6 +18,25 @@ export const resultSchema = object({
   }))
 });
 
+export function schemaFor(kind) {
+  return kind === 'scaffold' ? object({ ...resultSchema.properties,
+    documents: object({ architecture: string, deepseek_handoff: string })
+  }) : resultSchema;
+}
+
+export function decodeResult(value, kind) {
+  if (kind !== 'scaffold') return validateResult(value, kind);
+  exact(value, [...resultSchema.required, 'documents']);
+  exact(value.documents, ['architecture', 'deepseek_handoff']);
+  if (Object.values(value.documents).some(content => typeof content !== 'string') || !Array.isArray(value.files)) fail();
+  if (value.status === 'complete' && Object.values(value.documents).some(content => !content.trim())) throw new BridgeError('result', 'Codex вернул пустой обязательный документ scaffold; файлы не изменены.');
+  const { documents, ...result } = value;
+  return validateResult({ ...result, files: [...result.files,
+    { path: 'docs/architecture.md', content: documents.architecture },
+    { path: 'docs/deepseek-handoff.md', content: documents.deepseek_handoff }
+  ] }, kind);
+}
+
 function fail() { throw new BridgeError('result', 'Codex вернул некорректный структурированный ответ; файлы не изменены.'); }
 function exact(value, keys) {
   if (!value || typeof value !== 'object' || Array.isArray(value) || Object.keys(value).length !== keys.length || keys.some(key => !Object.hasOwn(value, key))) fail();

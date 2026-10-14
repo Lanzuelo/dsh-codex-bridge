@@ -2,7 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { runProcess } from './process.mjs';
 import { BridgeError, classifyError } from './errors.mjs';
-import { resultSchema, validateResult } from './result.mjs';
+import { schemaFor, decodeResult } from './result.mjs';
 import { removeTemporary } from './paths.mjs';
 
 export function modelId(value) {
@@ -28,7 +28,7 @@ handoff: не более 6000 символов, краткая передача 
 status=incomplete при недостатке данных; перечисли ограничения в summary. Никогда не утверждай полную проверку при исключённых файлах.
 Для review: files=[], options=[]; приоритет реальные баги, регрессии и безопасность; у каждого finding точные путь, строки, свидетельство, объяснение, исправление и confidence.
 Для plan: files=[], предложи 1–3 варианта стека/архитектуры с rationale и деревом каталогов. Для существующего проекта исходи из фактического стека.
-Для scaffold: используй только выбранный вариант; верни полное содержимое необходимых файлов и обязательно docs/architecture.md и docs/deepseek-handoff.md. Сохрани существующее пользовательское содержимое.
+Для scaffold: используй только выбранный вариант; верни полное содержимое необходимых файлов. Обязательные документы верни отдельно в documents.architecture и documents.deepseek_handoff; мост создаст из них docs/architecture.md и docs/deepseek-handoff.md в корне рабочей папки. Не дублируй их в files. Название проекта в дереве — метка корня, не дополнительный каталог. Сохрани существующее пользовательское содержимое.
 Для fix: предложи только исправления конкретных замечаний, полное содержимое изменённых файлов; не добавляй несвязанных изменений.`;
 
 export class CodexRunner {
@@ -51,7 +51,7 @@ export class CodexRunner {
     await this.auth(signal);
     const scratch = await fs.mkdtemp(path.join(this.stateDirectory, 'run-'));
     const schema = path.join(scratch, 'response.schema.json'), output = path.join(scratch, 'response.json');
-    await fs.writeFile(schema, JSON.stringify(resultSchema));
+    await fs.writeFile(schema, JSON.stringify(schemaFor(job.kind)));
     const input = `${rules}\n\nЗапрос пользователя и тип операции:\n${JSON.stringify({ kind: job.kind, request: job.request })}\n\nproject:\n${JSON.stringify(job.context)}\n\nprior:\n${JSON.stringify(job.prior || null)}`;
     try {
       const result = await this.processRunner(this.executable, buildExecArgs({ model: job.model, schema, output }), { cwd: scratch, input, signal, env: this.environment(), timeout: this.timeout });
@@ -67,7 +67,7 @@ export class CodexRunner {
       if (!stat || stat.size > 500_000) throw new BridgeError('result', 'Нет допустимого итогового ответа Codex.');
       let parsed;
       try { parsed = JSON.parse(await fs.readFile(output, 'utf8')); } catch { throw new BridgeError('result', 'Итоговый ответ не является JSON.'); }
-      return validateResult(parsed, job.kind);
+      return decodeResult(parsed, job.kind);
     } finally {
       // Scratch is a directory made by this invocation, never the project directory.
       await removeTemporary(scratch);
