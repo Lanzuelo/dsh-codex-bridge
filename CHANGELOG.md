@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.1.2 — 2026-10-14
+
+- Fix the bundle patch to insert the plugin row. Previous versions incorrectly
+  used an override for a nonexistent row, so installing the package did not
+  activate its Host or sidebar in a normal Desktop profile.
+- Extend the actual Harness runtime smoke test to exercise bundle composition
+  and reproduce the old missing-row warning before checking command dispatch.
+- Direct CLI runs performed by DeepSeek are not plugin jobs and must not be
+  treated as successful plugin initialization or imported automatically.
+
 ## 0.1.1 — 2026-10-14
 
 - Rename the npm package to `dsh-codex-architect` because the previous unscoped

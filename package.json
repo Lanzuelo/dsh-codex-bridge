@@ -1,6 +1,6 @@
 {
   "name": "dsh-codex-architect",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Codex architect and read-only reviewer for DeepSeek Harness Desktop",
   "type": "module",
   "license": "MIT",

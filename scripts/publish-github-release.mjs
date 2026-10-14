@@ -13,7 +13,9 @@ const archive = await fs.readFile(path.join(directory, archiveName));
 const checksum = createHash('sha256').update(archive).digest('hex');
 const expected = (await fs.readFile(path.join(directory, 'SHA256SUMS.txt'), 'utf8')).trim();
 if (expected !== `${checksum}  ${archiveName}`) throw new Error('Checksum mismatch; no publication performed.');
-const body = `Initial preview for official DeepSeek Harness Desktop 0.2.0-rc.2 on Windows.
+const body = `Preview for official DeepSeek Harness Desktop 0.2.0-rc.2 on Windows.
+
+Fixes bundle activation: versions 0.1.0 and 0.1.1 used an override for a nonexistent entry, so Harness skipped loading the plugin. Version 0.1.2 inserts the entry correctly. Update the package and fully restart Harness; verify /codex help before submitting a plan. Regression checked with Harness's actual applyEntryPatches loader.
 
 ## Install in Harness
 Paste the npm package name in Plugins → Add package:

@@ -5,16 +5,18 @@
 Use Codex as an architect and reviewer while DeepSeek handles implementation,
 inside DeepSeek Harness. Includes a sidebar and the `/codex` command.
 
-**Preview 0.1.1.** npm package: **dsh-codex-architect**. Targets the **official Windows Desktop 0.2.0-rc.2** only.
+**Preview 0.1.2.** npm package: **dsh-codex-architect**. Targets the **official Windows Desktop 0.2.0-rc.2** only.
 Codex CLI **0.162.0-alpha.17.2** was tested with ChatGPT sign-in. No OpenAI API key
 is required. Subscription quotas still apply.
 
+Versions **0.1.0 and 0.1.1** had a bundle activation bug. Update to **0.1.2** and restart Harness. A direct CLI call made by DeepSeek is not a plugin job.
+
 ## Install
 
-In Harness's Plugins manager, enter **`dsh-codex-architect`**. npm latest is **0.1.1**. To pin it, enter `dsh-codex-architect@0.1.1`. The versioned GitHub source is:
+In Harness's Plugins manager, enter **`dsh-codex-architect`**. npm latest is **0.1.2**. To pin it, enter `dsh-codex-architect@0.1.2`. The versioned GitHub source is:
 
 ```text
-github:Lanzuelo/dsh-codex-bridge#v0.1.1
+github:Lanzuelo/dsh-codex-bridge#v0.1.2
 ```
 
 Alternatively, download the `.tgz` from [GitHub Releases](https://github.com/Lanzuelo/dsh-codex-bridge/releases)

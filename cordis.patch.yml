@@ -1,2 +1,3 @@
-- id: codex-bridge
-  name: dsh-codex-architect
+- insert:
+    - id: codex-bridge
+      name: dsh-codex-architect
