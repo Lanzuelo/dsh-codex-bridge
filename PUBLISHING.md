@@ -2,9 +2,9 @@
 
 ## Current state
 
-The intended public repository is `Lanzuelo/dsh-codex-bridge`. Its creation,
-push and release have not yet been confirmed. The project is an independent
-preview, not an official OpenAI/DeepSeek plugin.
+The public source repository is [Lanzuelo/dsh-codex-bridge](https://github.com/Lanzuelo/dsh-codex-bridge).
+The project is an independent preview, not an official OpenAI/DeepSeek plugin.
+Release tags and attached tarballs are managed separately from npm publication.
 
 `dsh-codex-bridge` is already registered on npm by an unrelated project. **Do not
 run `npm publish` with the current unscoped package name.** The working package

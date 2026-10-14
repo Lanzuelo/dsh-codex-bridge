@@ -11,13 +11,14 @@ is required. Subscription quotas still apply.
 
 ## Install
 
-Publication is being prepared. Until a repository/tag is actually published, use
-the local `dsh-codex-bridge-0.1.0.tgz` through Harness's Plugins manager.
-After publication, the intended Git source will be:
+In Harness's Plugins manager, use the versioned GitHub source:
 
 ```text
 github:Lanzuelo/dsh-codex-bridge#v0.1.0
 ```
+
+Alternatively, download the `.tgz` from [GitHub Releases](https://github.com/Lanzuelo/dsh-codex-bridge/releases)
+and pass its absolute local path to the manager.
 
 **The npm name `dsh-codex-bridge` is already owned by an unrelated project.**
 Do not install that registry package expecting this implementation. A separate
